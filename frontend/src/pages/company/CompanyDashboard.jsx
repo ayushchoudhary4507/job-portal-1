@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Briefcase, Users, FileText, TrendingUp, Plus, ArrowRight, Building2, LogOut } from 'lucide-react';
+import { Briefcase, Users, FileText, TrendingUp, Plus, ArrowRight, Building2, LogOut, MessageSquare } from 'lucide-react';
 import CompanyLayout from '../../components/company/CompanyLayout';
 
 const CompanyDashboard = () => {
@@ -126,7 +126,7 @@ const CompanyDashboard = () => {
       {/* Quick Actions */}
       <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <Link
             to="/company/jobs"
             className="flex items-center space-x-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors"
@@ -149,6 +149,14 @@ const CompanyDashboard = () => {
           >
             <Building2 className="w-6 h-6 text-gray-600" />
             <span className="font-medium text-gray-700 dark:text-gray-400">Company Profile</span>
+          </Link>
+
+          <Link
+            to="/company/chat"
+            className="flex items-center space-x-3 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
+          >
+            <MessageSquare className="w-6 h-6 text-purple-600" />
+            <span className="font-medium text-purple-700 dark:text-purple-400">Messages</span>
           </Link>
 
           <button

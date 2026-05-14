@@ -1,4 +1,6 @@
 const Job = require('../models/Job');
+const User = require('../models/User');
+const { notifyNewJobPosted } = require('../utils/notificationHelper');
 
 // Get all active jobs
 exports.getAllJobs = async (req, res) => {
@@ -66,6 +68,23 @@ exports.createJob = async (req, res) => {
     const job = new Job(jobData);
     await job.save();
 
+    // Notify users whose skills match the new job
+    if (job.skills && job.skills.length > 0) {
+      const users = await User.find({ 
+        role: 'user',
+        skills: { $in: job.skills }
+      });
+
+      for (const user of users) {
+        await notifyNewJobPosted(
+          user._id,
+          job.title,
+          job._id,
+          job.company
+        );
+      }
+    }
+
     res.status(201).json({ message: 'Job created successfully', job });
   } catch (error) {
     console.error('Job creation error:', error);
@@ -77,10 +96,15 @@ exports.createJob = async (req, res) => {
   }
 };
 
-// Update job (employer only)
+// Update job (employer or admin)
 exports.updateJob = async (req, res) => {
   try {
-    const job = await Job.findOne({ _id: req.params.id, postedBy: req.user._id });
+    let job;
+    if (req.user.role === 'admin') {
+      job = await Job.findById(req.params.id);
+    } else {
+      job = await Job.findOne({ _id: req.params.id, postedBy: req.user._id });
+    }
 
     if (!job) {
       return res.status(404).json({ message: 'Job not found or unauthorized' });
@@ -95,10 +119,15 @@ exports.updateJob = async (req, res) => {
   }
 };
 
-// Delete job (employer only)
+// Delete job (employer or admin)
 exports.deleteJob = async (req, res) => {
   try {
-    const job = await Job.findOne({ _id: req.params.id, postedBy: req.user._id });
+    let job;
+    if (req.user.role === 'admin') {
+      job = await Job.findById(req.params.id);
+    } else {
+      job = await Job.findOne({ _id: req.params.id, postedBy: req.user._id });
+    }
 
     if (!job) {
       return res.status(404).json({ message: 'Job not found or unauthorized' });

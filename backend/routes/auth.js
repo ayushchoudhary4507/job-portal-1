@@ -30,4 +30,26 @@ router.get('/stats', authenticate, authorize('admin'), async (req, res) => {
   }
 });
 
+// Search users endpoint for chat
+router.get('/users/search', authenticate, async (req, res) => {
+  try {
+    const { q } = req.query;
+    
+    if (!q || q.length < 2) {
+      return res.json([]);
+    }
+
+    const users = await User.find({
+      $or: [
+        { name: { $regex: q, $options: 'i' } },
+        { email: { $regex: q, $options: 'i' } }
+      ]
+    }).select('name email role avatar').limit(20);
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error searching users', error: error.message });
+  }
+});
+
 module.exports = router;

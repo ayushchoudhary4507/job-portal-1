@@ -48,7 +48,7 @@ const UserSavedJobs = () => {
 
   const handleApply = async (jobId) => {
     try {
-      await userAPI.applyForJob(jobId);
+      await userAPI.applyForJob({ jobId });
       alert('Application submitted successfully!');
     } catch (err) {
       console.error('Error applying for job:', err);

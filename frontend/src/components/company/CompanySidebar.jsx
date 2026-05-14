@@ -110,7 +110,7 @@ const CompanySidebar = () => {
     },
     { path: '/company/applications', name: 'Applications', icon: FileText, badge: counts.applications },
     { path: '/company/candidates', name: 'Candidates', icon: Users },
-    { path: '/company/messages', name: 'Messages', icon: MessageSquare, badge: counts.messages },
+    { path: '/company/chat', name: 'Messages', icon: MessageSquare, badge: counts.messages },
     { path: '/company/notifications', name: 'Notifications', icon: Bell, badge: counts.notifications },
     { path: '/company/analytics', name: 'Analytics', icon: BarChart3 },
     { path: '/company/profile', name: 'Company Profile', icon: Building2 },
@@ -315,7 +315,7 @@ const CompanySidebar = () => {
       </aside>
 
       {/* Spacer for main content */}
-      <div className={`hidden lg:block transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-36'}`} />
+      <div className={`hidden lg:block transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-72'}`} />
     </>
   );
 };

@@ -1,12 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  LayoutDashboard, 
-  User, 
-  Briefcase, 
-  FileText, 
-  Bookmark, 
-  Bell, 
+import NotificationBell from '../NotificationBell';
+import {
+  LayoutDashboard,
+  User,
+  Briefcase,
+  FileText,
+  Bookmark,
   LogOut
 } from 'lucide-react';
 
@@ -68,6 +68,7 @@ const UserNavbar = () => {
 
           {/* User & Logout */}
           <div className="flex items-center space-x-4">
+            <NotificationBell />
             <div className="hidden sm:block text-right">
               <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name}</p>
               <p className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</p>

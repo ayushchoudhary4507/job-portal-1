@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { NotificationProvider } from './context/NotificationContext';
+import { ChatProvider } from './context/ChatContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 import LandingPage from './components/LandingPage';
@@ -15,6 +17,14 @@ import UserAppliedJobs from './pages/user/UserAppliedJobs';
 import UserSavedJobs from './pages/user/UserSavedJobs';
 import UserNotifications from './pages/user/UserNotifications';
 import UserSettings from './pages/user/UserSettings';
+import ResumeAnalyzer from './pages/user/ResumeAnalyzer';
+import JobRecommendations from './pages/user/JobRecommendations';
+import CareerAssistant from './pages/user/CareerAssistant';
+import UserJobDetails from './pages/user/UserJobDetails';
+import Messages from './pages/user/Messages';
+
+// Chat Pages
+import Chat from './pages/chat/Chat';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -63,19 +73,21 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <RoleBasedRedirect />
-                </ProtectedRoute>
-              } 
-            />
+        <ChatProvider>
+          <NotificationProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <RoleBasedRedirect />
+                  </ProtectedRoute>
+                } 
+              />
             
             {/* User Routes - Only for user role */}
             <Route 
@@ -99,6 +111,14 @@ function App() {
               element={
                 <RoleProtectedRoute allowedRoles={['user']}>
                   <UserJobs />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/jobs/:id" 
+              element={
+                <RoleProtectedRoute allowedRoles={['user']}>
+                  <UserJobDetails />
                 </RoleProtectedRoute>
               } 
             />
@@ -131,6 +151,46 @@ function App() {
               element={
                 <RoleProtectedRoute allowedRoles={['user']}>
                   <UserSettings />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/resume-analyzer" 
+              element={
+                <RoleProtectedRoute allowedRoles={['user']}>
+                  <ResumeAnalyzer />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/recommendations" 
+              element={
+                <RoleProtectedRoute allowedRoles={['user']}>
+                  <JobRecommendations />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/career-assistant" 
+              element={
+                <RoleProtectedRoute allowedRoles={['user']}>
+                  <CareerAssistant />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/messages" 
+              element={
+                <RoleProtectedRoute allowedRoles={['user']}>
+                  <Messages />
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/chat" 
+              element={
+                <RoleProtectedRoute allowedRoles={['user']}>
+                  <Chat />
                 </RoleProtectedRoute>
               } 
             />
@@ -222,6 +282,16 @@ function App() {
                 <RoleProtectedRoute allowedRoles={['admin']}>
                   <AdminLayout>
                     <AdminRoles />
+                  </AdminLayout>
+                </RoleProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/chat" 
+              element={
+                <RoleProtectedRoute allowedRoles={['admin']}>
+                  <AdminLayout>
+                    <Chat />
                   </AdminLayout>
                 </RoleProtectedRoute>
               } 
@@ -329,10 +399,22 @@ function App() {
                 </RoleProtectedRoute>
               } 
             />
+            <Route 
+              path="/company/chat" 
+              element={
+                <RoleProtectedRoute allowedRoles={['company']}>
+                  <CompanyLayout>
+                    <Chat />
+                  </CompanyLayout>
+                </RoleProtectedRoute>
+              } 
+            />
             
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
+        </NotificationProvider>
+      </ChatProvider>
       </AuthProvider>
     </ThemeProvider>
   );

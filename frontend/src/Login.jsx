@@ -7,7 +7,6 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, error, setError } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [selectedRole, setSelectedRole] = useState('user');
   const [isLoading, setIsLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -33,13 +32,7 @@ const Login = () => {
     try {
       const result = await login(formData);
       if (result.success) {
-        // Check if user's role matches selected role
         const userRole = result.user?.role;
-        if (userRole !== selectedRole) {
-          setError(`This account is not registered as ${selectedRole}. Please select the correct role.`);
-          setIsLoading(false);
-          return;
-        }
         // Redirect based on user role
         if (userRole === 'admin') {
           navigate('/admin/dashboard');
@@ -86,57 +79,6 @@ const Login = () => {
               {error}
             </div>
           )}
-
-          {/* Role Selection */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 text-center">
-              Select Login As
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-              <button
-                type="button"
-                onClick={() => setSelectedRole('user')}
-                className={`flex flex-col items-center justify-center space-y-1 py-3 px-2 rounded-xl border-2 transition-all duration-200 ${
-                  selectedRole === 'user'
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700'
-                }`}
-              >
-                <User className={`w-5 h-5 ${selectedRole === 'user' ? 'text-blue-600' : 'text-gray-400'}`} />
-                <span className={`text-xs sm:text-sm font-semibold ${selectedRole === 'user' ? 'text-blue-700 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                  User
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedRole('company')}
-                className={`flex flex-col items-center justify-center space-y-1 py-3 px-2 rounded-xl border-2 transition-all duration-200 ${
-                  selectedRole === 'company'
-                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-700'
-                }`}
-              >
-                <Building2 className={`w-5 h-5 ${selectedRole === 'company' ? 'text-emerald-600' : 'text-gray-400'}`} />
-                <span className={`text-xs sm:text-sm font-semibold ${selectedRole === 'company' ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                  Company
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedRole('admin')}
-                className={`flex flex-col items-center justify-center space-y-1 py-3 px-2 rounded-xl border-2 transition-all duration-200 ${
-                  selectedRole === 'admin'
-                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-700'
-                }`}
-              >
-                <Shield className={`w-5 h-5 ${selectedRole === 'admin' ? 'text-indigo-600' : 'text-gray-400'}`} />
-                <span className={`text-xs sm:text-sm font-semibold ${selectedRole === 'admin' ? 'text-indigo-700 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                  Admin
-                </span>
-              </button>
-            </div>
-          </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">

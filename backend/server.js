@@ -1,8 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const http = require('http');
 require('dotenv').config();
 const dns = require('dns');
+const { initializeSocket } = require('./socket');
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
@@ -11,9 +13,18 @@ const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
 const savedJobRoutes = require('./routes/savedJobs');
 const notificationRoutes = require('./routes/notifications');
+const resumeAnalysisRoutes = require('./routes/resumeAnalysis');
+const recommendationRoutes = require('./routes/recommendations');
+const chatRoutes = require('./routes/chat');
+const messageRoutes = require('./routes/messages');
+const conversationRoutes = require('./routes/conversations');
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
+
+// Initialize Socket.IO
+initializeSocket(server);
 
 // Middleware
 app.use(cors({
@@ -75,6 +86,11 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/resume-analysis', resumeAnalysisRoutes);
+app.use('/api/recommendations', recommendationRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/conversations', conversationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -83,6 +99,6 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT} - Job Portal 1 ayush rrr`);
 });

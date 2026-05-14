@@ -19,7 +19,8 @@ import {
   Plus,
   Edit3,
   Trash2,
-  Eye
+  Eye,
+  MessageSquare
 } from 'lucide-react';
 
 const AdminSidebar = () => {
@@ -110,6 +111,7 @@ const AdminSidebar = () => {
       icon: FileText,
       badge: counts.applications 
     },
+    { path: '/admin/chat', name: 'Messages', icon: MessageSquare },
     { path: '/admin/analytics', name: 'Analytics', icon: BarChart3 },
     { 
       path: '/admin/notifications', 

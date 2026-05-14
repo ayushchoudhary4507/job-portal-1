@@ -13,7 +13,7 @@ router.get('/unread-count', authenticate, notificationController.getUnreadCount)
 router.put('/:id/read', authenticate, notificationController.markAsRead);
 
 // Mark all as read
-router.put('/read-all', authenticate, notificationController.markAllAsRead);
+router.put('/mark-all-read', authenticate, notificationController.markAllAsRead);
 
 // Delete notification
 router.delete('/:id', authenticate, notificationController.deleteNotification);

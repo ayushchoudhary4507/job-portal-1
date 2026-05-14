@@ -14,7 +14,8 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Briefcase as LogoIcon
+  Briefcase as LogoIcon,
+  MessageSquare
 } from 'lucide-react';
 
 const UserSidebar = () => {
@@ -75,6 +76,7 @@ const UserSidebar = () => {
     { path: '/user/jobs', name: 'Browse Jobs', icon: Briefcase },
     { path: '/user/applied-jobs', name: 'My Applications', icon: FileText, badge: counts.applications },
     { path: '/user/saved-jobs', name: 'Saved Jobs', icon: Bookmark, badge: counts.savedJobs },
+    { path: '/user/chat', name: 'Messages', icon: MessageSquare },
     { path: '/user/profile', name: 'Profile / Resume', icon: User },
     { path: '/user/notifications', name: 'Notifications', icon: Bell, badge: counts.notifications },
     { path: '/user/settings', name: 'Settings', icon: Settings },

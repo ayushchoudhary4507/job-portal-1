@@ -10,7 +10,8 @@ import {
   XCircle,
   Clock,
   Loader,
-  User
+  User,
+  MessageSquare
 } from 'lucide-react';
 import UserLayout from '../../components/user/UserLayout';
 import { userAPI } from '../../services/userApi';
@@ -166,7 +167,7 @@ const UserDashboard = () => {
         {/* Quick Actions */}
         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <Link
               to="/user/jobs"
               className="flex items-center space-x-3 p-4 bg-violet-50 dark:bg-violet-900/20 rounded-xl hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors"
@@ -197,6 +198,14 @@ const UserDashboard = () => {
             >
               <Bell className="w-6 h-6 text-yellow-600" />
               <span className="font-medium text-yellow-700 dark:text-yellow-400">Notifications</span>
+            </Link>
+
+            <Link
+              to="/user/chat"
+              className="flex items-center space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+            >
+              <MessageSquare className="w-6 h-6 text-blue-600" />
+              <span className="font-medium text-blue-700 dark:text-blue-400">Messages</span>
             </Link>
           </div>
         </div>

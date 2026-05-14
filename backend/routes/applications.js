@@ -3,6 +3,11 @@ const router = express.Router();
 const { authenticate, authorize } = require('../middleware/auth');
 const applicationController = require('../controllers/applicationController');
 const Application = require('../models/Application');
+const {
+  notifyApplicationAccepted,
+  notifyApplicationRejected,
+  notifyApplicationReceived
+} = require('../utils/notificationHelper');
 
 // Count routes
 router.get('/count', authenticate, authorize('admin'), applicationController.getApplicationCount);
@@ -54,14 +59,22 @@ router.put('/:id/status', authenticate, authorize('employer', 'admin'), async (r
     if (notes) application.notes = notes;
     await application.save();
 
-    // Notify applicant
-    await Notification.create({
-      user: application.applicant._id,
-      title: `Application ${status.charAt(0).toUpperCase() + status.slice(1)}`,
-      message: `Your application for ${application.job.title} has been ${status}`,
-      type: 'application',
-      data: { applicationId: application._id, jobId: application.job._id }
-    });
+    // Notify applicant using Socket.IO
+    if (status === 'accepted') {
+      await notifyApplicationAccepted(
+        application.applicant._id,
+        application.job.title,
+        application.job._id,
+        application.job.company
+      );
+    } else if (status === 'rejected') {
+      await notifyApplicationRejected(
+        application.applicant._id,
+        application.job.title,
+        application.job._id,
+        application.job.company
+      );
+    }
 
     res.json({ message: 'Application status updated', application });
   } catch (error) {
